@@ -1,16 +1,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SettingsActivity" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-    <TextView
+    <Button
+        android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Submit Changes" />
+
+    <CheckBox
+        android:id="@+id/perfectlyElasticCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Perfectly Elastic Collisions" />
+
+    <CheckBox
+        android:id="@+id/perfectlyInelasticCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/perfectlyElasticCheckBox"
+        android:text="Perfectly Inelastic Collisions" />
+
+    <CheckBox
+        android:id="@+id/gravityParticlesCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/perfectlyInelasticCheckBox"
+        android:text="Gravity (particles)" />
+
+    <CheckBox
+        android:id="@+id/gravityGroundCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/gravityParticlesCheckBox"
+        android:text="Gravity (ground)" />
+
+    <CheckBox
+        android:id="@+id/frictionCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/gravityGroundCheckBox"
+        android:text="Friction" />
 
 </RelativeLayout>

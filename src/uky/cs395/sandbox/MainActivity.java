@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -24,10 +25,19 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-				startActivity(intent);
+				startActivityForResult(intent, 0);
 			}
 		});
-	} 
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode == RESULT_OK){
+			Bundle results = data.getExtras();
+			boolean[] vals = results.getBooleanArray("key");
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
