@@ -9,8 +9,11 @@ import android.view.View;
 
 public class DrawView extends View {
 	
+	/*required for accessing*/
 	public static final String TAG = "DrawView";
+	/*paint values*/
 	private Paint backgroundColor;
+	private Paint particleColor;
 	/*options*/
 	private boolean allowElastic;
 	private boolean allowInelastic;
@@ -18,10 +21,17 @@ public class DrawView extends View {
 	private boolean allowGravityG;
 	private boolean allowFriction;
 	
+	/* DrawView Constructor
+	 * @param: standard inputs
+	 * @end: sets default values for each member variable and instantiates as needed
+	 */
 	public DrawView(Context c, AttributeSet as) {
 		super(c, as);
+		/*paint values*/
 		backgroundColor = new Paint();
 		backgroundColor.setColor(Color.BLACK);
+		particleColor = new Paint();
+		particleColor.setColor(Color.RED);
 		/*set option values*/
 		allowElastic = false;
 		allowInelastic = false;
@@ -34,6 +44,10 @@ public class DrawView extends View {
 		c.drawPaint(backgroundColor);
 	}
 	
+	/* setOptions
+	 * @param: receives boolean values to set options to
+	 * @end: private member values have been set to their new values
+	 */
 	public void setOptions(boolean e, boolean i, boolean p, boolean g, boolean f) {
 		allowElastic = e;
 		allowInelastic = i;

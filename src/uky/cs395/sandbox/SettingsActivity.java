@@ -23,12 +23,20 @@ public class SettingsActivity extends Activity {
 	boolean gravParticles = false;
 	boolean gravGround = false;
 	boolean fric = false;
-	
+
+	/* onCreate
+	 * @params: standard inputs
+	 * @end: linked objects and views, linked listeners to views, implements logic to
+	 * maintain invariant that elastic and inelastic collision may not be implemented
+	 * at the same time, handles sending data back to main activity through intent with
+	 * submit button
+	 * (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
-		
 		/*link objects to views*/
 		submitButton = (Button)findViewById(R.id.submitButton);
 		final CheckBox perfectlyElastic = (CheckBox)findViewById(R.id.perfectlyElasticCheckBox);
@@ -36,11 +44,19 @@ public class SettingsActivity extends Activity {
 		CheckBox gravityParticles = (CheckBox)findViewById(R.id.gravityParticlesCheckBox);
 		CheckBox gravityGround = (CheckBox)findViewById(R.id.gravityGroundCheckBox);
 		CheckBox friction = (CheckBox)findViewById(R.id.frictionCheckBox);
-		
 		/*link listeners to views*/
 		submitButton.setOnClickListener(new View.OnClickListener() {
+			/* onClick
+			 * @param: recieves current view
+			 * @end: created intent and bundle, stores user's chosen values into array
+			 * placed into bundle.  Bundle is packaged into intent which is returned
+			 * to MainActivity
+			 * (non-Javadoc)
+			 * @see android.view.View.OnClickListener#onClick(android.view.View)
+			 */
 			@Override
 			public void onClick(View v) {
+				/*create intent and bundle for storing and returning data*/
 				Intent resultIntent = new Intent();
 				Bundle results = new Bundle();
 				/*populate Array with values*/
@@ -60,6 +76,14 @@ public class SettingsActivity extends Activity {
 		});
 		
 		perfectlyElastic.setOnClickListener(new View.OnClickListener() {
+			/* onClick
+			 * @param: standard this view
+			 * @end: checks and maintains invariant, XOR(elastic, inelastic)
+			 * possible for neither to be activated
+			 * ALWAYS flips value of perfElastic
+			 * (non-Javadoc)
+			 * @see android.view.View.OnClickListener#onClick(android.view.View)
+			 */
 			@Override
 			public void onClick(View v) {
 				/*check if inelastic is checked*/
@@ -72,6 +96,14 @@ public class SettingsActivity extends Activity {
 		});
 		
 		perfectlyInelastic.setOnClickListener(new View.OnClickListener() {
+			/* onClick
+			 * @param: standard this view
+			 * @end: checks and maintains invariant, XOR(elastic, inelastic)
+			 * possible for neither to be activated
+			 * ALWAYS flips value of perfInelastic
+			 * (non-Javadoc)
+			 * @see android.view.View.OnClickListener#onClick(android.view.View)
+			 */
 			@Override
 			public void onClick(View v) {
 				/*check if perfectly elastic is checked*/
