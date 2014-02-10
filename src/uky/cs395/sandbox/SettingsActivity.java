@@ -11,14 +11,14 @@ import android.widget.Toast;
 
 public class SettingsActivity extends Activity {
 	
-	//views
+	/*views*/
 	Button submitButton;
 	CheckBox perfectlyElastic;
 	CheckBox perfectlyInelastic;
 	CheckBox gravityParticles;
 	CheckBox gravityGround;
 	CheckBox friction;
-	//values
+	/*values*/
 	boolean perfElastic = false;
 	boolean perfInelastic = false;
 	boolean gravParticles = false;
@@ -30,19 +30,18 @@ public class SettingsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
 		
-		//link views
+		/*link objects to views*/
 		submitButton = (Button)findViewById(R.id.submitButton);
-		CheckBox perfectlyElastic = (CheckBox)findViewById(R.id.perfectlyElasticCheckBox);
-		CheckBox perfectlyInelastic = (CheckBox)findViewById(R.id.perfectlyInelasticCheckBox);
+		final CheckBox perfectlyElastic = (CheckBox)findViewById(R.id.perfectlyElasticCheckBox);
+		final CheckBox perfectlyInelastic = (CheckBox)findViewById(R.id.perfectlyInelasticCheckBox);
 		CheckBox gravityParticles = (CheckBox)findViewById(R.id.gravityParticlesCheckBox);
 		CheckBox gravityGround = (CheckBox)findViewById(R.id.gravityGroundCheckBox);
 		CheckBox friction = (CheckBox)findViewById(R.id.frictionCheckBox);
 		
-		//link listeners
+		/*link listeners to views*/
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//Toast.makeText(SettingsActivity.this, "Submitted", Toast.LENGTH_SHORT).show();
 				Intent resultIntent = new Intent();
 				Bundle results = new Bundle();
 				/*populate Array with values*/
@@ -64,6 +63,11 @@ public class SettingsActivity extends Activity {
 		perfectlyElastic.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				/*check if inelastic is checked*/
+				if(perfInelastic){
+					perfInelastic = false;
+					perfectlyInelastic.setChecked(false);
+				}
 				perfElastic = !perfElastic;
 			}
 		});
@@ -71,6 +75,11 @@ public class SettingsActivity extends Activity {
 		perfectlyInelastic.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				/*check if perfectly elastic is checked*/
+				if(perfElastic) {
+					perfElastic = false;
+					perfectlyElastic.setChecked(false);
+				}
 				perfInelastic = !perfInelastic;
 			}
 		});

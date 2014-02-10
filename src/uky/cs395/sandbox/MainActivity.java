@@ -3,10 +3,10 @@ package uky.cs395.sandbox;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -36,6 +36,11 @@ public class MainActivity extends Activity {
 		if(resultCode == RESULT_OK){
 			Bundle results = data.getExtras();
 			boolean[] vals = results.getBooleanArray("key");
+			Log.i("ELEMENTS", "el"+vals[0]);
+			Log.i("ELEMENTS", "il"+vals[1]);
+			Log.i("ELEMENTS", "gp"+vals[2]);
+			Log.i("ELEMENTS", "gg"+vals[3]);
+			Log.i("ELEMENTS", "fr"+vals[4]);
 		}
 	}
 
