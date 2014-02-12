@@ -11,7 +11,6 @@ import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 public class DrawView extends View implements OnGestureListener {
 	
@@ -62,6 +61,16 @@ public class DrawView extends View implements OnGestureListener {
 		}
 	}
 	
+	public void update() {
+		/*update particle positions*/
+		for(Particle current: particles) {
+			current.setXPosition(current.getXPosition()+current.getXVelocity());
+			current.setYPosition(current.getYPosition()+current.getYVelocity());
+		}
+		/*render changes*/
+		invalidate();
+	}
+	
 	/* setOptions
 	 * @param: receives boolean values to set options to
 	 * @end: private member values have been set to their new values
@@ -73,7 +82,8 @@ public class DrawView extends View implements OnGestureListener {
 		allowGravityG = g;
 		allowFriction = f;
 	}
-
+	
+	@Override
 	public boolean onTouchEvent(MotionEvent me) {
 		return gd.onTouchEvent(me);
 	}

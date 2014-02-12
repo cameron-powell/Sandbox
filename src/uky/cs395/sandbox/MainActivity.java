@@ -41,6 +41,24 @@ public class MainActivity extends Activity {
 				startActivityForResult(intent, 0); // switch to settings activity
 			}
 		});
+		/*create a frame update thread*/
+		Thread updateThread = new Thread() {
+			public void run() {
+				try {
+					while(!isInterrupted()) {
+						Thread.sleep(20);	//pause between renders
+						runOnUiThread(new Runnable() {
+							public void run() {
+								view.update();	//update the particles
+							}
+						});
+					}
+				}
+				catch (InterruptedException e) {}
+			}
+		};
+		/*start the update thread*/
+		updateThread.start();
 	}
 	
 	/* onActivityResult

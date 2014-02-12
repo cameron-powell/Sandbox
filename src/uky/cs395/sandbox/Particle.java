@@ -2,11 +2,12 @@ package uky.cs395.sandbox;
 
 public class Particle {
 	
-	//variables
+	/*variables*/
 	private float xPosition, yPosition;
 	private float xVelocity, yVelocity;
+	final float RADIUS = 16;
 	
-	//constructors
+	/*default constructor*/
 	public Particle() {
 		this.xPosition = 0;
 		this.yPosition = 0;
@@ -14,6 +15,7 @@ public class Particle {
 		this.yVelocity = 0;
 	}
 	
+	/*param constructor*/
 	public Particle(float xp, float yp, float xv, float yv) {
 		this.xPosition = xp;
 		this.yPosition = yp;
@@ -21,7 +23,7 @@ public class Particle {
 		this.yVelocity = yv;
 	}
 	
-	//accessors
+	/*accessors*/
 	public float getXPosition() {
 		return this.xPosition;
 	}
@@ -38,7 +40,11 @@ public class Particle {
 		return this.yVelocity;
 	}
 	
-	//mutators
+	public float getRadius() {
+		return RADIUS;
+	}
+	
+	/*mutators*/
 	public void setXPosition(float xp) {
 		this.xPosition = xp;
 	}
