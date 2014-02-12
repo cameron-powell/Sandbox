@@ -27,6 +27,7 @@ public class DrawView extends View implements OnGestureListener {
 	private boolean allowGravityP;
 	private boolean allowGravityG;
 	private boolean allowFriction;
+	private boolean allowFling;
 	/*particle collection*/
 	ArrayList<Particle> particles;
 	
@@ -75,12 +76,13 @@ public class DrawView extends View implements OnGestureListener {
 	 * @param: receives boolean values to set options to
 	 * @end: private member values have been set to their new values
 	 */
-	public void setOptions(boolean e, boolean i, boolean p, boolean g, boolean f) {
+	public void setOptions(boolean e, boolean i, boolean p, boolean g, boolean f, boolean af) {
 		allowElastic = e;
 		allowInelastic = i;
 		allowGravityP = p;
 		allowGravityG = g;
 		allowFriction = f;
+		allowFling = af;
 	}
 	
 	@Override
@@ -92,9 +94,24 @@ public class DrawView extends View implements OnGestureListener {
 	public boolean onDown(MotionEvent e) { return true;	}	//must return true for other events to register
 
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {
-		// TODO Auto-generated method stub
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+		/*check if user has allowed particle fling*/
+		if(allowFling) {
+			/*check each particle to see if it was selected*/
+			for(Particle p: particles) {
+				/*where did the user touch*/
+				float userX = e1.getX();
+				float userY = e1.getY();
+				/*check if it was within the particles selectable zone*/
+				if(p.getXPosition()-32 <= userX && p.getXPosition()+32 >= userX) { // x axis
+					if(p.getYPosition()-32 <= userY && p.getYPosition()+32 >= userY) { // y axis
+						/*set proportional particle velocities*/
+						p.setXVelocity(velocityX/100);
+						p.setYVelocity(velocityY/100);
+					}
+				}
+			}
+		}
 		return false;
 	}
 

@@ -17,12 +17,14 @@ public class SettingsActivity extends Activity {
 	CheckBox gravityParticles;
 	CheckBox gravityGround;
 	CheckBox friction;
+	CheckBox flingParticles;
 	/*values*/
 	boolean perfElastic = false;
 	boolean perfInelastic = false;
 	boolean gravParticles = false;
 	boolean gravGround = false;
 	boolean fric = false;
+	boolean fling = false;
 
 	/* onCreate
 	 * @params: standard inputs
@@ -41,9 +43,10 @@ public class SettingsActivity extends Activity {
 		submitButton = (Button)findViewById(R.id.submitButton);
 		final CheckBox perfectlyElastic = (CheckBox)findViewById(R.id.perfectlyElasticCheckBox);
 		final CheckBox perfectlyInelastic = (CheckBox)findViewById(R.id.perfectlyInelasticCheckBox);
-		CheckBox gravityParticles = (CheckBox)findViewById(R.id.gravityParticlesCheckBox);
-		CheckBox gravityGround = (CheckBox)findViewById(R.id.gravityGroundCheckBox);
-		CheckBox friction = (CheckBox)findViewById(R.id.frictionCheckBox);
+		gravityParticles = (CheckBox)findViewById(R.id.gravityParticlesCheckBox);
+		gravityGround = (CheckBox)findViewById(R.id.gravityGroundCheckBox);
+		friction = (CheckBox)findViewById(R.id.frictionCheckBox);
+		flingParticles = (CheckBox)findViewById(R.id.flingCheckBox);
 		/*link listeners to views*/
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			/* onClick
@@ -60,12 +63,13 @@ public class SettingsActivity extends Activity {
 				Intent resultIntent = new Intent();
 				Bundle results = new Bundle();
 				/*populate Array with values*/
-				boolean[] vals = new boolean[5];
+				boolean[] vals = new boolean[6];
 				vals[0] = perfElastic;
 				vals[1] = perfInelastic;
 				vals[2] = gravParticles;
 				vals[3] = gravGround;
 				vals[4] = fric;
+				vals[5] = fling;
 				/*package bundle and reslutIntent*/
 				results.putBooleanArray("key", vals);
 				resultIntent.putExtras(results);
@@ -133,6 +137,13 @@ public class SettingsActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				fric = !fric;
+			}
+		});
+		
+		flingParticles.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				fling = !fling;
 			}
 		});
 	}

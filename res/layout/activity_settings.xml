@@ -50,4 +50,12 @@
         android:layout_below="@+id/gravityGroundCheckBox"
         android:text="Friction" />
 
+    <CheckBox
+        android:id="@+id/flingCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/frictionCheckBox"
+        android:text="Fling Particles" />
+
 </RelativeLayout>
