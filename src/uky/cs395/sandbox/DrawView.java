@@ -68,6 +68,13 @@ public class DrawView extends View implements OnGestureListener {
 			current.setXPosition(current.getXPosition()+current.getXVelocity());
 			current.setYPosition(current.getYPosition()+current.getYVelocity());
 		}
+		/*friction*/
+		if(allowFriction) {
+			for(Particle p: particles) {
+				p.setXVelocity(p.getXVelocity()*.98f);
+				p.setYVelocity(p.getYVelocity()*.98f);
+			}
+		}
 		/*render changes*/
 		invalidate();
 	}
@@ -117,7 +124,9 @@ public class DrawView extends View implements OnGestureListener {
 
 	@Override
 	public void onLongPress(MotionEvent e) {
+		/*add a new particle to the particles collection*/
 		particles.add(new Particle(e.getX(), e.getY(), 0, 0));
+		/*refresh screen*/
 		invalidate();
 	}
 
