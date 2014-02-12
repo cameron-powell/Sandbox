@@ -3,8 +3,8 @@ package uky.cs395.sandbox;
 public class Particle {
 	
 	//variables
-	private double xPosition, yPosition;
-	private double xVelocity, yVelocity;
+	private float xPosition, yPosition;
+	private float xVelocity, yVelocity;
 	
 	//constructors
 	public Particle() {
@@ -14,7 +14,7 @@ public class Particle {
 		this.yVelocity = 0;
 	}
 	
-	public Particle(double xp, double yp, double xv, double yv) {
+	public Particle(float xp, float yp, float xv, float yv) {
 		this.xPosition = xp;
 		this.yPosition = yp;
 		this.xVelocity = xv;
@@ -22,36 +22,36 @@ public class Particle {
 	}
 	
 	//accessors
-	public double getXPosition() {
+	public float getXPosition() {
 		return this.xPosition;
 	}
 	
-	public double getYPosition() {
+	public float getYPosition() {
 		return this.yPosition;
 	}
 	
-	public double getXVelocity() {
+	public float getXVelocity() {
 		return this.xVelocity;
 	}
 	
-	public double getYVelocity() {
+	public float getYVelocity() {
 		return this.yVelocity;
 	}
 	
 	//mutators
-	public void setXPosition(double xp) {
+	public void setXPosition(float xp) {
 		this.xPosition = xp;
 	}
 	
-	public void setYPosition(double yp) {
+	public void setYPosition(float yp) {
 		this.yPosition = yp;
 	}
 	
-	public void setXVelocity(double xv) {
+	public void setXVelocity(float xv) {
 		this.xVelocity = xv;
 	}
 	
-	public void setYVelocity(double yv) {
+	public void setYVelocity(float yv) {
 		this.yVelocity = yv;
 	}
 
