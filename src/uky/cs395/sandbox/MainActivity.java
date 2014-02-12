@@ -76,7 +76,7 @@ public class MainActivity extends Activity {
 			Bundle results = data.getExtras();
 			boolean[] vals = results.getBooleanArray("key");
 			/*pass/set physics options to/in view*/
-			view.setOptions(vals[0], vals[1], vals[2], vals[3], vals[4], vals[5]);
+			view.setOptions(vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6]);
 		}
 	}
 

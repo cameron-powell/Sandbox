@@ -14,6 +14,7 @@ public class SettingsActivity extends Activity {
 	Button submitButton;
 	CheckBox perfectlyElastic;
 	CheckBox perfectlyInelastic;
+	CheckBox wall;
 	CheckBox gravityParticles;
 	CheckBox gravityGround;
 	CheckBox friction;
@@ -21,6 +22,7 @@ public class SettingsActivity extends Activity {
 	/*values*/
 	boolean perfElastic = false;
 	boolean perfInelastic = false;
+	boolean wallCollision = false;
 	boolean gravParticles = false;
 	boolean gravGround = false;
 	boolean fric = false;
@@ -43,6 +45,7 @@ public class SettingsActivity extends Activity {
 		submitButton = (Button)findViewById(R.id.submitButton);
 		final CheckBox perfectlyElastic = (CheckBox)findViewById(R.id.perfectlyElasticCheckBox);
 		final CheckBox perfectlyInelastic = (CheckBox)findViewById(R.id.perfectlyInelasticCheckBox);
+		wall = (CheckBox)findViewById(R.id.wallCheckBox);
 		gravityParticles = (CheckBox)findViewById(R.id.gravityParticlesCheckBox);
 		gravityGround = (CheckBox)findViewById(R.id.gravityGroundCheckBox);
 		friction = (CheckBox)findViewById(R.id.frictionCheckBox);
@@ -63,13 +66,14 @@ public class SettingsActivity extends Activity {
 				Intent resultIntent = new Intent();
 				Bundle results = new Bundle();
 				/*populate Array with values*/
-				boolean[] vals = new boolean[6];
+				boolean[] vals = new boolean[7];
 				vals[0] = perfElastic;
 				vals[1] = perfInelastic;
-				vals[2] = gravParticles;
-				vals[3] = gravGround;
-				vals[4] = fric;
-				vals[5] = fling;
+				vals[2] = wallCollision;
+				vals[3] = gravParticles;
+				vals[4] = gravGround;
+				vals[5] = fric;
+				vals[6] = fling;
 				/*package bundle and reslutIntent*/
 				results.putBooleanArray("key", vals);
 				resultIntent.putExtras(results);
@@ -116,6 +120,13 @@ public class SettingsActivity extends Activity {
 					perfectlyElastic.setChecked(false);
 				}
 				perfInelastic = !perfInelastic;
+			}
+		});
+		
+		wall.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				wallCollision = !wallCollision;
 			}
 		});
 		

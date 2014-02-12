@@ -27,11 +27,19 @@
         android:text="Perfectly Inelastic Collisions" />
 
     <CheckBox
-        android:id="@+id/gravityParticlesCheckBox"
+        android:id="@+id/wallCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/perfectlyInelasticCheckBox"
+        android:text="Wall Collisions" />
+
+    <CheckBox
+        android:id="@+id/gravityParticlesCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/wallCheckBox"
         android:text="Gravity (particles)" />
 
     <CheckBox
@@ -54,7 +62,7 @@
         android:id="@+id/flingCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/wallCheckBox"
         android:layout_below="@+id/frictionCheckBox"
         android:text="Fling Particles" />
 

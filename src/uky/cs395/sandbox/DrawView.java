@@ -24,6 +24,7 @@ public class DrawView extends View implements OnGestureListener {
 	/*options*/
 	private boolean allowElastic;
 	private boolean allowInelastic;
+	private boolean allowWalls;
 	private boolean allowGravityP;
 	private boolean allowGravityG;
 	private boolean allowFriction;
@@ -48,6 +49,7 @@ public class DrawView extends View implements OnGestureListener {
 		/*set option values*/
 		allowElastic = false;
 		allowInelastic = false;
+		allowWalls = false;
 		allowGravityP = false;
 		allowGravityG = false;
 		allowFriction = false;
@@ -83,12 +85,13 @@ public class DrawView extends View implements OnGestureListener {
 	 * @param: receives boolean values to set options to
 	 * @end: private member values have been set to their new values
 	 */
-	public void setOptions(boolean e, boolean i, boolean p, boolean g, boolean f, boolean af) {
+	public void setOptions(boolean e, boolean i,boolean w, boolean p, boolean g, boolean fr, boolean af) {
 		allowElastic = e;
 		allowInelastic = i;
+		allowWalls = w;
 		allowGravityP = p;
 		allowGravityG = g;
-		allowFriction = f;
+		allowFriction = fr;
 		allowFling = af;
 	}
 	
