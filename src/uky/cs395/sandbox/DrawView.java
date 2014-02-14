@@ -64,7 +64,7 @@ public class DrawView extends View implements OnGestureListener {
 		}
 	}
 	
-	public void update() {
+	public synchronized void update() {
 		/*update particle positions*/
 		for(Particle current: particles) {
 			current.setXPosition(current.getXPosition()+current.getXVelocity());
@@ -75,6 +75,32 @@ public class DrawView extends View implements OnGestureListener {
 			for(Particle p: particles) {
 				p.setXVelocity(p.getXVelocity()*.98f);
 				p.setYVelocity(p.getYVelocity()*.98f);
+			}
+		}
+		/*ground gravity*/
+		if(allowGravityG){
+			for(Particle p: particles){
+				p.setYVelocity(p.getYVelocity()+0.25f);
+			}
+		}
+		/*particle to particle gravity*/
+		if(allowGravityP){
+			for(int i=0; i<particles.size()-1; i++){
+				for(int j=i+1; j<particles.size(); j++){
+					float xDist = particles.get(i).getXPosition()-particles.get(j).getXPosition();
+					float yDist = particles.get(i).getYPosition()-particles.get(j).getYPosition();
+					float dist = (float)Math.sqrt(xDist*xDist+yDist*yDist);
+					
+					float accel = 1000/(dist*dist+75);
+					float xAccel = accel*(xDist/dist);
+					float yAccel = accel*(yDist/dist);
+					
+					particles.get(j).setXVelocity(particles.get(j).getXVelocity()+xAccel);
+					particles.get(i).setXVelocity(particles.get(i).getXVelocity()-xAccel);
+					
+					particles.get(j).setYVelocity(particles.get(j).getYVelocity()+yAccel);
+					particles.get(i).setYVelocity(particles.get(i).getYVelocity()-yAccel);
+				}
 			}
 		}
 		/*render changes*/

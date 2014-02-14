@@ -5,7 +5,7 @@ public class Particle {
 	/*variables*/
 	private float xPosition, yPosition;
 	private float xVelocity, yVelocity;
-	final float RADIUS = 16;
+	private final float RADIUS = 16;
 	
 	/*default constructor*/
 	public Particle() {
