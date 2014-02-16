@@ -1,11 +1,13 @@
 package uky.cs395.sandbox;
 
 import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -16,7 +18,7 @@ public class DrawView extends View implements OnGestureListener {
 	/*required for accessing*/
 	public static final String TAG = "DrawView";
 	/*for detecting user input*/
-	GestureDetector gd;
+	private GestureDetector gd;
 	/*paint values*/
 	private Paint backgroundColor;
 	private Paint particleColor;
@@ -32,7 +34,7 @@ public class DrawView extends View implements OnGestureListener {
 	private boolean allowFriction;
 	private boolean allowFling;
 	/*particle collection*/
-	ArrayList<Particle> particles;
+	private ArrayList<Particle> particles;
 	
 	/* DrawView Constructor
 	 * @param: standard inputs
@@ -128,6 +130,21 @@ public class DrawView extends View implements OnGestureListener {
  						particles.get(i).setYVelocity(particles.get(i).getYVelocity()*-1f); //flip y velocity
  				}
 				
+			}
+		}
+		/*detect collisions*/
+		for(int i=0; i<particles.size(); i++) {
+			for(int j=i+1; j<particles.size(); j++){
+				/*check the distance between the particles*/
+				float xDistance = particles.get(i).getXPosition()-particles.get(j).getXPosition();
+				float yDistance = particles.get(i).getYPosition()-particles.get(j).getYPosition();
+				xDistance *= xDistance;
+				yDistance *= yDistance;
+				float distance = (float)Math.sqrt(xDistance+yDistance);
+				/*check if collided*/
+				if(distance < (particles.get(i).getRadius()+particles.get(j).getRadius())) {
+					Log.i("COLLIDED", "COLLIDED");
+				}
 			}
 		}
 		/*render changes*/
