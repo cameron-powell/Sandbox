@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -95,7 +94,7 @@ public class DrawView extends View implements OnGestureListener {
 					float yDist = particles.get(i).getYPosition()-particles.get(j).getYPosition();
 					float dist = (float)Math.sqrt(xDist*xDist+yDist*yDist);
 					
-					float accel = 1000/(dist*dist+75);
+					float accel = 100/(dist*dist);
 					float xAccel = accel*(xDist/dist);
 					float yAccel = accel*(yDist/dist);
 					
@@ -169,6 +168,58 @@ public class DrawView extends View implements OnGestureListener {
 							distance = (float)Math.sqrt(xDistance+yDistance);
 						}
 					}
+					/*elastic collision*/
+					if(allowElastic) {
+						double dx = particles.get(i).getXPosition() - particles.get(j).getXPosition();
+						double dy = particles.get(i).getYPosition() - particles.get(j).getYPosition();
+					    double collisionAngle = Math.atan2(dy, dx);
+					    double magnitude1 = Math.sqrt(particles.get(i).getXVelocity()*particles.get(i).getXVelocity()+particles.get(i).getYVelocity()*particles.get(i).getYVelocity());
+					    double magnitude2 = Math.sqrt(particles.get(j).getXVelocity()*particles.get(j).getXVelocity()+particles.get(j).getYVelocity()*particles.get(j).getYVelocity());
+					    double direction1 = Math.atan2(particles.get(i).getYVelocity(), particles.get(i).getXVelocity());
+					    double direction2 = Math.atan2(particles.get(j).getYVelocity(), particles.get(j).getXVelocity());
+					    double new_xspeed1 = magnitude1*Math.cos(direction1-collisionAngle);
+					    double new_yspeed1 = magnitude1*Math.sin(direction1-collisionAngle);
+					    double new_xspeed2 = magnitude2*Math.cos(direction2-collisionAngle);
+					    double new_yspeed2 = magnitude2*Math.sin(direction2-collisionAngle);
+					    double final_xspeed1 = new_xspeed2;
+					    double final_xspeed2 = new_xspeed1;
+					    double final_yspeed1 = new_yspeed1;
+					    double final_yspeed2 = new_yspeed2;
+					    particles.get(i).setXVelocity((float)(Math.cos(collisionAngle)*final_xspeed1+Math.cos(collisionAngle+Math.PI/2)*final_yspeed1));
+					    particles.get(i).setYVelocity((float)(Math.sin(collisionAngle)*final_xspeed1+Math.sin(collisionAngle+Math.PI/2)*final_yspeed1));
+					    particles.get(j).setXVelocity((float)(Math.cos(collisionAngle)*final_xspeed2+Math.cos(collisionAngle+Math.PI/2)*final_yspeed2));
+					    particles.get(j).setYVelocity((float)(Math.sin(collisionAngle)*final_xspeed2+Math.sin(collisionAngle+Math.PI/2)*final_yspeed2));
+						/*
+						double theta0 = Math.atan(particles.get(i).getYVelocity()/particles.get(i).getXVelocity());
+						double theta1 = Math.atan(particles.get(j).getYVelocity()/particles.get(j).getYVelocity());
+						double phi = Math.atan2(Math.sqrt(yDistance), Math.sqrt(xDistance)); 
+								//(Math.PI/2)+Math.atan((particles.get(j).getYPosition()-particles.get(i).getYPosition())/(particles.get(j).getXPosition()-particles.get(i).getXPosition()));
+						double velocity0 = Math.sqrt(Math.pow(particles.get(i).getXVelocity(), 2)+Math.pow(particles.get(i).getYVelocity(), 2));
+						double velocity1 = Math.sqrt(Math.pow(particles.get(j).getXVelocity(), 2)+Math.pow(particles.get(j).getYVelocity(), 2));
+						double mass0 = particles.get(i).getMass();
+						double mass1 = particles.get(j).getMass();
+						double finalVelocity0X = velocity0*Math.cos(theta0-phi)*(mass0-mass1)+2*mass1*velocity1*Math.cos(theta1-phi);
+						finalVelocity0X /= (mass0+mass1);
+						finalVelocity0X *= Math.cos(phi);
+						finalVelocity0X += velocity0*Math.sin(theta0-phi)*Math.cos(phi+(Math.PI/2));
+						double finalVelocity0Y = velocity0*Math.cos(theta0-phi)*(mass0-mass1)+2*mass1*velocity1*Math.cos(theta1-phi);
+						finalVelocity0Y /= (mass0+mass1);
+						finalVelocity0Y *= Math.sin(phi);
+						finalVelocity0Y += velocity0*Math.sin(theta0-phi)*Math.sin(phi+(Math.PI/2));
+						double finalVelocity1X = velocity1*Math.cos(theta1-phi)*(mass1-mass0)+2*mass0*velocity0*Math.cos(theta0-phi);
+						finalVelocity1X /= (mass0+mass1);
+						finalVelocity1X *= Math.cos(phi);
+						finalVelocity1X += velocity1*Math.sin(theta1-phi)*Math.cos(phi+(Math.PI/2));
+						double finalVelocity1Y = velocity1*Math.cos(theta1-phi)*(mass1-mass0)+2*mass0*velocity0*Math.cos(theta0-phi);
+						finalVelocity1Y /= (mass0+mass1);
+						finalVelocity1Y *= Math.sin(phi);
+						finalVelocity1Y += velocity1*Math.sin(theta1-phi)*Math.sin(phi+(Math.PI/2));
+						particles.get(i).setXVelocity((float)finalVelocity0X);
+						particles.get(i).setYVelocity((float)finalVelocity0Y);
+						particles.get(j).setXVelocity((float)finalVelocity1X);
+						particles.get(j).setYVelocity((float)finalVelocity1Y);
+						*/
+					}
 				}
 			}
 		}
@@ -238,7 +289,7 @@ public class DrawView extends View implements OnGestureListener {
 	@Override
 	public void onLongPress(MotionEvent e) {
 		/*add a new particle to the particles collection*/
-		particles.add(new Particle(e.getX(), e.getY(), 0, 0));
+		particles.add(new Particle(e.getX(), e.getY(), 0, 0, 1));
 		/*refresh screen*/
 		invalidate();
 	}

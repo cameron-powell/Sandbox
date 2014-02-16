@@ -6,6 +6,7 @@ public class Particle {
 	private float xPosition, yPosition;
 	private float xVelocity, yVelocity;
 	private final float RADIUS = 16;
+	private float mass;
 	
 	/*default constructor*/
 	public Particle() {
@@ -13,14 +14,16 @@ public class Particle {
 		this.yPosition = 0;
 		this.xVelocity = 0;
 		this.yVelocity = 0;
+		this.mass = 0;
 	}
 	
 	/*param constructor*/
-	public Particle(float xp, float yp, float xv, float yv) {
+	public Particle(float xp, float yp, float xv, float yv, float m) {
 		this.xPosition = xp;
 		this.yPosition = yp;
 		this.xVelocity = xv;
 		this.yVelocity = yv;
+		this.mass = m;
 	}
 	
 	/*accessors*/
@@ -44,6 +47,10 @@ public class Particle {
 		return RADIUS;
 	}
 	
+	public float getMass() {
+		return mass;
+	}
+	
 	/*mutators*/
 	public void setXPosition(float xp) {
 		this.xPosition = xp;
@@ -59,6 +66,10 @@ public class Particle {
 	
 	public void setYVelocity(float yv) {
 		this.yVelocity = yv;
+	}
+	
+	public void setMass(float m) {
+		this.mass = m;
 	}
 
 }
