@@ -139,7 +139,7 @@ public class DrawView extends View implements OnGestureListener {
 				if(particles.get(i).getYVelocity() > 0) { //bottom wall
 					if(tempYPos+tempRad >= ySize) {
 						particles.get(i).setYVelocity(particles.get(i).getYVelocity()*-1f); //flip y velocity
-						/*fix random entropy increase*/
+						/*fix random energy increase*/
 						if(allowGravityG) {
 							particles.get(i).setYVelocity(particles.get(i).getYVelocity()*.9825);
 						}
