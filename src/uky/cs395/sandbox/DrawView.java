@@ -143,7 +143,32 @@ public class DrawView extends View implements OnGestureListener {
 				float distance = (float)Math.sqrt(xDistance+yDistance);
 				/*check if collided*/
 				if(distance < (particles.get(i).getRadius()+particles.get(j).getRadius())) {
-					Log.i("COLLIDED", "COLLIDED");
+					/*separate particles*/
+					if(allowElastic || allowInelastic) {
+						while(distance < (particles.get(i).getRadius()+particles.get(j).getRadius())){
+							/*move apart in appropriate directions*/
+							if(particles.get(i).getXPosition() > particles.get(j).getXPosition()) {
+								particles.get(i).setXPosition(particles.get(i).getXPosition()+1);
+								particles.get(j).setXPosition(particles.get(j).getXPosition()-1);
+							} else {
+								particles.get(i).setXPosition(particles.get(i).getXPosition()-1);
+								particles.get(j).setXPosition(particles.get(j).getXPosition()+1);
+							}
+							if(particles.get(i).getYPosition() > particles.get(j).getYPosition()) {
+								particles.get(i).setYPosition(particles.get(i).getYPosition()+1);
+								particles.get(j).setYPosition(particles.get(j).getYPosition()-1);
+							} else {
+								particles.get(i).setYPosition(particles.get(i).getYPosition()-1);
+								particles.get(j).setYPosition(particles.get(j).getYPosition()+1);
+							}
+							/*recalculate new distance*/
+							xDistance = particles.get(i).getXPosition()-particles.get(j).getXPosition();
+							yDistance = particles.get(i).getYPosition()-particles.get(j).getYPosition();
+							xDistance *= xDistance;
+							yDistance *= yDistance;
+							distance = (float)Math.sqrt(xDistance+yDistance);
+						}
+					}
 				}
 			}
 		}
