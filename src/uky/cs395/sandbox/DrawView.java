@@ -1,7 +1,6 @@
 package uky.cs395.sandbox;
 
 import java.util.ArrayList;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,6 +20,9 @@ public class DrawView extends View implements OnGestureListener {
 	/*paint values*/
 	private Paint backgroundColor;
 	private Paint particleColor;
+	/*screen dimensions*/
+	private int xSize;
+	private int ySize;
 	/*options*/
 	private boolean allowElastic;
 	private boolean allowInelastic;
@@ -78,15 +80,15 @@ public class DrawView extends View implements OnGestureListener {
 			}
 		}
 		/*ground gravity*/
-		if(allowGravityG){
-			for(Particle p: particles){
+		if(allowGravityG) {
+			for(Particle p: particles) {
 				p.setYVelocity(p.getYVelocity()+0.25f);
 			}
 		}
 		/*particle to particle gravity*/
-		if(allowGravityP){
-			for(int i=0; i<particles.size()-1; i++){
-				for(int j=i+1; j<particles.size(); j++){
+		if(allowGravityP) {
+			for(int i=0; i<particles.size()-1; i++) {
+				for(int j=i+1; j<particles.size(); j++) {
 					float xDist = particles.get(i).getXPosition()-particles.get(j).getXPosition();
 					float yDist = particles.get(i).getYPosition()-particles.get(j).getYPosition();
 					float dist = (float)Math.sqrt(xDist*xDist+yDist*yDist);
@@ -101,6 +103,31 @@ public class DrawView extends View implements OnGestureListener {
 					particles.get(j).setYVelocity(particles.get(j).getYVelocity()+yAccel);
 					particles.get(i).setYVelocity(particles.get(i).getYVelocity()-yAccel);
 				}
+			}
+		}
+		/*wall collisions*/
+		if(allowWalls) {
+			/*check each particle*/
+			for(int i=0; i<particles.size(); i++) {
+				float tempXPos = particles.get(i).getXPosition();	//x position of current particle
+				float tempYPos = particles.get(i).getYPosition();	//y position of current particle
+				float tempRad = particles.get(i).getRadius();		//radius of current particle
+				if(particles.get(i).getXVelocity() > 0) { //right wall
+					if(tempXPos+tempRad >= xSize)
+						particles.get(i).setXVelocity(particles.get(i).getXVelocity()*-1f);	//flip x velocity
+				} else if(particles.get(i).getXVelocity() < 0) { //left wall
+					if(tempXPos-tempRad <= 0)
+						particles.get(i).setXVelocity(particles.get(i).getXVelocity()*-1f); //flip x velocity
+				}
+				if(particles.get(i).getYVelocity() > 0) { //bottom wall
+					if(tempYPos+tempRad >= ySize)
+						particles.get(i).setYVelocity(particles.get(i).getYVelocity()*-1f); //flip y velocity
+						
+ 				} else if(particles.get(i).getYVelocity() < 0) { //top wall
+ 					if(tempYPos-tempRad <= 0)
+ 						particles.get(i).setYVelocity(particles.get(i).getYVelocity()*-1f); //flip y velocity
+ 				}
+				
 			}
 		}
 		/*render changes*/
@@ -119,6 +146,21 @@ public class DrawView extends View implements OnGestureListener {
 		allowGravityG = g;
 		allowFriction = fr;
 		allowFling = af;
+	}
+	
+	/* onSizeChanged
+	 * @param: accepts new view width, height, oldWidth and oldHeight
+	 * @end: fixes the app's incorrect dimensions for screen height and width after creation
+	 * 		for all devices
+	 * (non-Javadoc)
+	 * @see android.view.View#onSizeChanged(int, int, int, int)
+	 */
+	@Override
+	public void onSizeChanged(int w, int h, int oldw, int oldh) {
+		super.onSizeChanged(w, h, oldw, oldh);
+		/*reset wall boundaries*/
+		xSize = w;
+		ySize = h;
 	}
 	
 	@Override
