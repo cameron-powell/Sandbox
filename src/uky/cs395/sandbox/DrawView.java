@@ -20,6 +20,7 @@ public class DrawView extends View implements OnGestureListener {
 	private GestureDetector gd;
 	/*paint values*/
 	private Paint backgroundColor;
+	private Paint firstParticleColor;
 	private Paint particleColor;
 	/*screen dimensions*/
 	private int xSize;
@@ -47,6 +48,8 @@ public class DrawView extends View implements OnGestureListener {
 		/*paint values*/
 		backgroundColor = new Paint();
 		backgroundColor.setColor(Color.BLACK);
+		firstParticleColor = new Paint();
+		firstParticleColor.setColor(Color.BLUE);
 		particleColor = new Paint();
 		particleColor.setColor(Color.RED);
 		/*set option values*/
@@ -62,8 +65,17 @@ public class DrawView extends View implements OnGestureListener {
 	
 	public void onDraw(Canvas c) {
 		c.drawPaint(backgroundColor);
+		/*
 		for(Particle p: particles) {
-			c.drawCircle((float)p.getXPosition(), (float)p.getYPosition(), 16, particleColor);
+			c.drawCircle((float)p.getXPosition(), (float)p.getYPosition(), (float)p.getRadius(), particleColor);
+		}
+		*/
+		for(int i=0; i<particles.size(); i++){
+			Particle p = particles.get(i);
+			if(i==0)
+				c.drawCircle((float)p.getXPosition(), (float)p.getYPosition(), (float)p.getRadius(), firstParticleColor);
+			else
+				c.drawCircle((float)p.getXPosition(), (float)p.getYPosition(), (float)p.getRadius(), particleColor);
 		}
 	}
 	
@@ -103,7 +115,7 @@ public class DrawView extends View implements OnGestureListener {
 					double yDist = particles.get(i).getYPosition()-particles.get(j).getYPosition();
 					double dist = Math.sqrt(xDist*xDist+yDist*yDist);
 					
-					double force = ((particles.get(i).getMass()*particles.get(j).getMass())*100)/(dist*dist);
+					double force = ((particles.get(i).getMass()*particles.get(j).getMass())*200)/(dist*dist);
 					
 					double iaccel = force/particles.get(i).getMass();
 					double xiAccel = iaccel*(xDist/dist);
@@ -240,6 +252,45 @@ public class DrawView extends View implements OnGestureListener {
 						particles.get(j).setYVelocity((float)finalVelocity1Y);
 						*/
 					}
+					/*inelastic collision*/
+					if(allowInelastic){
+						/*initial conditions of particles*/
+						double mass0 = particles.get(i).getMass();
+						double mass1 = particles.get(j).getMass();
+						double radius0 = particles.get(i).getRadius();
+						double radius1 = particles.get(j).getRadius();
+		
+						double velocity0X = particles.get(i).getXVelocity();
+						double velocity0Y = particles.get(i).getYVelocity();
+						double velocity1X = particles.get(j).getXVelocity();
+						double velocity1Y = particles.get(j).getYVelocity();
+						
+						/*find center of mass for new particle*/
+						double centerOfMassX = mass0*particles.get(i).getXPosition()+mass1*particles.get(j).getXPosition();
+						centerOfMassX /= (mass0+mass1);
+						double centerOfMassY = mass0*particles.get(i).getYPosition()+mass1*particles.get(j).getYPosition();
+						centerOfMassY /= (mass0+mass1);
+						
+						/*find conditions for new particle*/
+						double newMass = mass0+mass1;
+						double newRadius = Math.sqrt(radius0*radius0+radius1*radius1);
+						double newXVelocity = mass0*velocity0X+mass1*velocity1X;
+						newXVelocity /= (mass0+mass1);
+						double newYVelocity = mass0*velocity0Y+mass1*velocity1Y;
+						newYVelocity /= (mass0+mass1);
+						
+						/*set conditions for new particle*/
+						particles.get(i).setMass(newMass);
+						particles.get(i).setRadius(newRadius);
+						particles.get(i).setXVelocity(newXVelocity);
+						particles.get(i).setYVelocity(newYVelocity);
+						particles.get(i).setXPosition(centerOfMassX);
+						particles.get(i).setYPosition(centerOfMassY);
+						
+						/*delete extraneous particle*/
+						particles.remove(j);
+						j-=1;//make sure next particle doesn't get skipped
+					}
 				}
 			}
 		}
@@ -297,8 +348,8 @@ public class DrawView extends View implements OnGestureListener {
 				if(p.getXPosition()-32 <= userX && p.getXPosition()+32 >= userX) { // x axis
 					if(p.getYPosition()-32 <= userY && p.getYPosition()+32 >= userY) { // y axis
 						/*set proportional particle velocities*/
-						p.setXVelocity(velocityX/100);
-						p.setYVelocity(velocityY/100);
+						p.setXVelocity(velocityX/200);
+						p.setYVelocity(velocityY/200);
 					}
 				}
 			}
@@ -309,7 +360,7 @@ public class DrawView extends View implements OnGestureListener {
 	@Override
 	public void onLongPress(MotionEvent e) {
 		/*add a new particle to the particles collection*/
-		particles.add(new Particle(e.getX(), e.getY(), 0, 0, 1));
+		particles.add(new Particle(e.getX(), e.getY(), 0, 0, 16, 1));
 		/*refresh screen*/
 		invalidate();
 	}
