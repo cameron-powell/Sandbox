@@ -65,11 +65,6 @@ public class DrawView extends View implements OnGestureListener {
 	
 	public void onDraw(Canvas c) {
 		c.drawPaint(backgroundColor);
-		/*
-		for(Particle p: particles) {
-			c.drawCircle((float)p.getXPosition(), (float)p.getYPosition(), (float)p.getRadius(), particleColor);
-		}
-		*/
 		for(int i=0; i<particles.size(); i++){
 			Particle p = particles.get(i);
 			if(i==0)
@@ -79,7 +74,7 @@ public class DrawView extends View implements OnGestureListener {
 		}
 	}
 	
-	public synchronized void update() {
+	public void update() {
 		/*update particle positions*/
 		for(Particle current: particles) {
 			current.setXPosition(current.getXPosition()+current.getXVelocity());
@@ -102,20 +97,11 @@ public class DrawView extends View implements OnGestureListener {
 		if(allowGravityP) {
 			for(int i=0; i<particles.size()-1; i++) {
 				for(int j=i+1; j<particles.size(); j++) {
-					/*
-					float dx = particles.get(i).getXPosition()-particles.get(j).getXPosition();
-					float dy = particles.get(i).getYPosition()-particles.get(j).getYPosition();
-					float dist = (float)Math.hypot(dx, dy);
-					
-					float theata = (float)Math.atan2(dy, dx);
-					float force = (float)(0.2 * particles.get(i).getMass()*particles.get(j).getMass())/(dist*dist);
-					*/
-				
 					double xDist = particles.get(i).getXPosition()-particles.get(j).getXPosition();
 					double yDist = particles.get(i).getYPosition()-particles.get(j).getYPosition();
 					double dist = Math.sqrt(xDist*xDist+yDist*yDist);
 					
-					double force = ((particles.get(i).getMass()*particles.get(j).getMass())*200)/(dist*dist);
+					double force = ((particles.get(i).getMass()*particles.get(j).getMass())*256)/(dist*dist);
 					
 					double iaccel = force/particles.get(i).getMass();
 					double xiAccel = iaccel*(xDist/dist);
@@ -202,6 +188,8 @@ public class DrawView extends View implements OnGestureListener {
 					}
 					/*elastic collision*/
 					if(allowElastic) {
+						Particle pi = particles.get(i);
+						Particle pj = particles.get(j);
 						double dx = particles.get(i).getXPosition() - particles.get(j).getXPosition();
 						double dy = particles.get(i).getYPosition() - particles.get(j).getYPosition();
 					    double collisionAngle = Math.atan2(dy, dx);
@@ -213,8 +201,8 @@ public class DrawView extends View implements OnGestureListener {
 					    double new_yspeed1 = magnitude1*Math.sin(direction1-collisionAngle);
 					    double new_xspeed2 = magnitude2*Math.cos(direction2-collisionAngle);
 					    double new_yspeed2 = magnitude2*Math.sin(direction2-collisionAngle);
-					    double final_xspeed1 = new_xspeed2;
-					    double final_xspeed2 = new_xspeed1;
+					    double final_xspeed1 = ((pi.getMass()-pj.getMass())*new_xspeed1+(pj.getMass()+pj.getMass())*new_xspeed2)/(pi.getMass()+pj.getMass());
+					    double final_xspeed2 = ((pi.getMass()+pi.getMass())*new_xspeed1+(pj.getMass()-pi.getMass())*new_xspeed2)/(pi.getMass()+pj.getMass());
 					    double final_yspeed1 = new_yspeed1;
 					    double final_yspeed2 = new_yspeed2;
 					    particles.get(i).setXVelocity(Math.cos(collisionAngle)*final_xspeed1+Math.cos(collisionAngle+Math.PI/2)*final_yspeed1);
